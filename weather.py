@@ -23,14 +23,17 @@ def get_weather_data():
     humidity = about.find('span').get_text().split(' ')[1]
     speed = about.find('em').get_text()
 
-    info_all = '墨迹天气提醒您\n' + '今天是{0}年{1}年{2}日,陕西省西安市的天气({3})为：\n天气:{4}\n实时温度:{5}\n空气质量指数:{6}\n湿度:{7}\n风速:{8}'.format(
+    tips = soup.find('div', {'class': 'wea_tips clearfix'}).find('em').get_text()[:-1]
+    # print(tips)
+
+    info_all = '墨迹天气提醒您\n' + '今天是{0}年{1}年{2}日,陕西省西安市的天气({3})为：\n天气:{4}\n实时温度:{5}\n空气质量指数:{6}\n湿度:{7}\n风速:{8}\n今日天气提示:{9}'.format(
         str(datetime.date.today()).split('-')[0],
         str(datetime.date.today()).split('-')[1],
         str(datetime.date.today()).split('-')[2],
         update_time,
         weather,
         temperature + '℃', AQI,
-        humidity, speed)
+        humidity, speed, tips)
     print(info_all)
 
 
