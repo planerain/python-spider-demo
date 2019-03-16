@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import datetime
+import itchat
 
 
 def get_weather_data():
@@ -34,8 +35,22 @@ def get_weather_data():
         weather,
         temperature + '℃', AQI,
         humidity, speed, tips)
-    print(info_all)
+    return info_all
+
+
+def send_to_person_or_group(send_info, nick_name, send_type):
+    if send_type == '1':
+        user = itchat.search_friends(name=nick_name)
+    else:
+        user = itchat.search_chatrooms(name=nick_name)
+    user_name = user[0]['UserName']
+    itchat.send(send_info, toUserName=user_name)
+    print('succeed')
 
 
 if __name__ == '__main__':
-    get_weather_data()
+    send_info = get_weather_data()
+    itchat.auto_login(hotReload=False)
+    nick_name = input('请问你要发送给谁?')
+    send_type = input('发送类型:1好友 2群聊')
+    send_to_person_or_group(send_info, nick_name, send_type)
